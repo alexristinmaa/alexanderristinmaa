@@ -1,0 +1,39 @@
+.main {
+  padding: 20px 80px;
+}
+
+#nav {
+  background-color: aliceblue;
+  padding: 20px;
+
+}
+
+#navLine {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+}
+
+.navLink {
+  padding: 8px;
+  display: inline-block;
+  margin: auto 0 auto 0;
+}
+
+.navLeft {
+  display: flex;
+  justify-content: center;
+}
+
+.navRight {
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+}
+
+#navTitle {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+  display: inline-block;
+}
