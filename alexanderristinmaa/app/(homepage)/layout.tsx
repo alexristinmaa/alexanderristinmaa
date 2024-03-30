@@ -36,7 +36,7 @@ export default function RootLayout({
         {children}
         </main>
         <footer id={styles.footer}>
-          <span>Made with <Link href='/hemligt'><span className='icon heartIcon'></span></Link></span>
+          <span>Made with <Link href='/arvidbajs'><span className='icon heartIcon'></span></Link></span>
           <span>av Alexander Ristinmaa 2024</span>
         </footer>
       </body>
