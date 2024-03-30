@@ -1,5 +1,12 @@
+@import './icons.css';
+
 :root {
-  --foreground-rgb: 240, 240, 240;
+  --black: #0a0908ff;
+  --white: #f2f4f3ff;
+  --highlight: #EA9010;
+  --highlight-weak: #e5b065;
+  --beaver: #a9927dff;
+  --walnut-brown: #5e503fff;
 }
 
 * {
@@ -12,6 +19,8 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background-color: var(--white);
+  color: var(--black);
 }
 
 a {

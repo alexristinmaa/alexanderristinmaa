@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv">
-      <body className={inter.className}>
+      <body className={inter.className} id={styles.body}>
         <nav id={styles.nav}>
           <div id={styles.navLine}>
             <div className={styles.navLeft}>
@@ -32,9 +32,13 @@ export default function RootLayout({
             </div>
           </div>
         </nav>
-        <main className={styles.main}>
+        <main id={styles.main}>
         {children}
         </main>
+        <footer id={styles.footer}>
+          <span>Made with <Link href='/hemligt'><span className='icon heartIcon'></span></Link></span>
+          <span>av Alexander Ristinmaa 2024</span>
+        </footer>
       </body>
     </html>
   );

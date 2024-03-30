@@ -1,0 +1,10 @@
+.icon {
+    background-size: contain;
+    display: inline-block;
+}
+
+.heartIcon {
+    background-image: url('../images/heart-icon.svg');
+    width: 1em;
+    height: 0.9em;
+}
