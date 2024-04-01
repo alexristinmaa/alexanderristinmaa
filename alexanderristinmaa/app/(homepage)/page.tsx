@@ -7,7 +7,12 @@ import styles from './page.module.css';
 export default function Home() {
   return (
     <div>
-        <p>Hej. Jag heter Alexander Ristinmaa och detta är min hemsida. Om du vågar kolla runt kan du säkert hitta v<Link href='/hemligt'>a</Link>d du letar efter.</p>
+        <p>Om du vågar kolla runt kan du säkert hitta v<Link href='/hemligt'>a</Link>d du letar efter.</p>
+        <div id={styles.imgDiv}>
+          <img id ={styles.img} src="/Alexander Ristinmaa.JPG" alt="Cool img" />
+          <p>Kebnekaise toppstuga och en räddningshelikopter</p>
+        </div>
+        
     </div>
   );
 }

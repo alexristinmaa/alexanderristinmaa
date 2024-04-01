@@ -27,8 +27,8 @@ export default function RootLayout({
               <Link href='/' id={styles.navTitle}>Alex Ställe</Link>
             </div>
             <div className={styles.navRight}>
-              <Link className={styles.navLink} href='/alex'>Vem e jag</Link>
-              <Link className={styles.navLink} href='/varfor'>Varför e jag</Link>
+              <Link className={styles.navLink} href='/blog'>Bloggen</Link>
+              <Link className={styles.navLink} href='/alex'>Vem är jag</Link>
             </div>
           </div>
         </nav>

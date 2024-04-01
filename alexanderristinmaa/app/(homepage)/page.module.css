@@ -1,0 +1,14 @@
+#imgDiv {
+    width: 50%;
+    float: right;
+}
+
+#imgDiv > p{
+    margin-top: 8px;
+    float: right;
+}
+
+#img {
+    width: 100%;
+    border: 2px solid var(--black);
+}
