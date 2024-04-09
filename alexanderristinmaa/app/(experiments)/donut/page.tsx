@@ -41,7 +41,7 @@ export default function Home() {
       };
 
       // Call the renderScene function to start the animation loop
-      renderScene(0);
+      renderScene();
     })();
     
 
