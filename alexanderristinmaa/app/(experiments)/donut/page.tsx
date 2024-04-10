@@ -70,6 +70,10 @@ export default function Home() {
     <div>
       <span className={styles.text} id={styles.thebox}>THE DONUT</span>
       <div ref={containerRef} />
+      <audio autoPlay hidden>
+        <source src="/onrepeat.mp3" type="audio/mpeg"/>
+        If you're reading this, audio isn't supported. 
+      </audio>
     </div>
   );
 }
