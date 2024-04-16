@@ -1,9 +1,13 @@
-#imgDiv {
-    width: 50%;
-    float: right;
+#contentDiv {
+    display: flex;
+    gap: 20px;
 }
 
-#imgDiv > p{
+#contentDiv > div {
+    flex: 1;
+}
+
+#imgDiv > p {
     margin-top: 8px;
     float: right;
 }
@@ -11,4 +15,27 @@
 #img {
     width: 100%;
     border: 2px solid var(--black);
+}
+
+#experimentsTitle {
+    font-size: 1.05em;
+    margin-bottom: 10px;
+}
+
+#experimentsList {
+    list-style: none;
+}
+
+#experimentsList > * > li {
+    margin-bottom: 10px;
+}
+
+.experimentTitle {
+    margin-bottom: 4px;
+}
+
+@media screen and (max-width: 900px) {
+    #contentDiv {
+        flex-direction: column;
+    }
 }

@@ -13,3 +13,9 @@
     color: white;
     font-size: 30px;
 }
+
+#enableAudio {
+    top: 10px;
+    left: 10px;
+    color: white;
+}

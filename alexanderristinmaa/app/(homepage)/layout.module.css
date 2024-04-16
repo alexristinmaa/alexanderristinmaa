@@ -58,3 +58,9 @@
   text-align: center;
   white-space: pre-line;
 }
+
+@media screen and (max-width: 900px) {
+  #main {
+    padding: 20px 40px;
+  }
+}
