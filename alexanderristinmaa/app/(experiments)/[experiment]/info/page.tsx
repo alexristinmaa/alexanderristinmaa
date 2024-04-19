@@ -6,10 +6,6 @@ import * as fs from 'fs';
 import {marked} from 'marked';
 import parseMD from 'parse-md';
 
-marked.use({
-  gfm: true
-})
-
 export function generateStaticParams() {
     const experiments = 
       fs.readdirSync('./app/(experiments)', {withFileTypes: true})
