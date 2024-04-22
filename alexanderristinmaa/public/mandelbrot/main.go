@@ -3,51 +3,86 @@
 package main
 
 import (
-	"math/cmplx"
-	"syscall/js"
+	"fmt"
 )
 
-func main() {
-	js.Global().Set("greet", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		if len(args) == 0 {
-			return "Hello, World!"
-		}
+var pixels []byte
+var WIDTH, HEIGHT int
 
-		return []interface{}{1, 2}
-	}))
+func main() {}
 
-	select {}
+//go:export allocateBuffer
+func allocateBuffer(w, h int) *byte {
+	if w <= 0 || h <= 0 {
+		fmt.Println("Cannot initialize 0-height or 0-width buffer, h > 0, w > 0")
+		return nil
+	}
+	WIDTH = w
+	HEIGHT = h
+
+	pixels = make([]byte, WIDTH*HEIGHT*4)
+
+	return &pixels[0]
 }
 
 //export mandelbrot
-func mandelbrot(pixels [][]*int, xStart, xEnd, yStart, yEnd float64, resX, resY, iterations int) {
-	deltaX := complex((xEnd-xStart)/float64(resX), 0)
-	deltaY := complex(0, (yEnd-yStart)/float64(resY))
+func mandelbrot(xStart, xEnd, yStart, yEnd float64, iterations int) {
+	if len(pixels) == 0 {
+		fmt.Println("Cannot create mandelbrot without initializing pixels (allocateBuffer)")
+		return
+	}
+
+	deltaX := complex((xEnd-xStart)/float64(WIDTH), 0)
+	deltaY := complex(0, (yEnd-yStart)/float64(HEIGHT))
 
 	coord := complex(xStart, yStart)
 
-	for x := 0; x < resX; x++ {
-		coord = complex(0, imag(coord))
-		for y := 0; y < resY; y++ {
-			*pixels[x][y] = testPoint(coord, iterations)
-			coord += deltaY
+	scaleIterations := 255.0 / float64(iterations)
+
+	fmt.Println(HEIGHT, WIDTH)
+
+	for y := 0; y < HEIGHT; y++ {
+		coord = complex(xStart, imag(coord))
+
+		for x := 0; x < WIDTH*4; x += 4 {
+			clr := testPoint(coord, iterations, scaleIterations)
+			index := y*WIDTH*4 + x
+
+			pixels[index] = clr
+			pixels[index+1] = clr
+			pixels[index+2] = clr
+			pixels[index+3] = 255
+
+			coord += deltaX
 		}
 
-		coord += deltaX
+		coord += deltaY
 	}
 }
 
-func testPoint(c complex128, iterations int) int {
-	z := complex(0, 0)
+func testPoint(c complex128, iterations int, scale float64) byte {
+	z := c
+	var zold complex128
 	i := 0
+	period := 0
 
 	for ; i < iterations; i++ {
+		if real(z)*real(z)+imag(z)*imag(z) > 4 {
+			break
+		}
+
 		z = z*z + c
 
-		if cmplx.Abs(z) > 2 {
-			break
+		if z == zold {
+			return byte(float64(iterations) * scale)
+		}
+
+		period++
+		if period == 20 {
+			zold = z
+			period = 0
 		}
 	}
 
-	return i
+	return byte(float64(i) * scale)
 }
