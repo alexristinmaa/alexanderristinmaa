@@ -10,7 +10,7 @@ const nextConfig = {
     };
 
     config.resolve = {
-      extensions: ['.wasm', '...'],
+      extensions: ['.ts', '.wasm', '...'],
     }
 
     config.resolve.alias = {

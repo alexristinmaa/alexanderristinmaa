@@ -39,8 +39,8 @@ export default function Home() {
         </ul>
       </div>
         <div id={styles.imgDiv}>
-          <img id ={styles.img} src="/Alexander Ristinmaa.JPG" alt="Cool img" />
-          <p><i>Kebnekaise toppstuga och <Link href="/loveochotto">en</Link> räddningshelikopter</i></p>
+          <img id ={styles.img} src="/keb.jpg" alt="Cool img" />
+          <p><i>Kebnekaise toppstuga och en räddningshelikopter</i></p>
         </div>
         
     </div>

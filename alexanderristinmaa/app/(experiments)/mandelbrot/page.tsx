@@ -1,9 +1,8 @@
 'use client';
 
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 // other
-
 
 let wasm : WebAssembly.Instance;
 let mandelbrot: any, allocateBuffer: any;
@@ -18,25 +17,32 @@ let yEnd = 1.12;
 
 const ZOOMFACTOR = 8;
 
-
 export default function Home() {    
     const [iterations, setIterations] = useState(255);
 
-    import("./mandelbrot/wasm_exec").then(() => {
-        const go = new global.Go(); // Defined in wasm_exec.js
-        const WASM_URL = 'wasm.wasm';
 
-        WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject).then(function (obj) {
-            wasm = obj.instance;
-            go.run(wasm);
+    // useEffect is to make sure it is only run client-side
+    useEffect(() => {
+        import("./mandelbrot/wasm_exec").then(() => {
+            const go = new global.Go(); // Defined in wasm_exec.js
+            const WASM_URL = '/mandelbrot/wasm.wasm';
+    
+            WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject).then(function (obj) {
+                wasm = obj.instance;
+                go.run(wasm);
+    
+                ({allocateBuffer, mandelbrot} = wasm.exports);
+    
+                ({width: WIDTH, height: HEIGHT} = document.getElementById("mandelbrotCanvas")!.getBoundingClientRect());
+    
+                bufferPointer = allocateBuffer(WIDTH, HEIGHT);
 
-            ({allocateBuffer, mandelbrot} = wasm.exports);
+                renderMandelbrot();
+            })
+        });
+    }, [])
 
-            ({width: WIDTH, height: HEIGHT} = document.getElementById("mandelbrotCanvas")!.getBoundingClientRect());
-
-            bufferPointer = allocateBuffer(WIDTH, HEIGHT);
-        })
-    });
+    
 
     function renderMandelbrot() {
         console.log(xStart, xEnd, yStart, yEnd)
