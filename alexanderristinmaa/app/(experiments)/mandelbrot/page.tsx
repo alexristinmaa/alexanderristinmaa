@@ -20,7 +20,6 @@ const ZOOMFACTOR = 8;
 export default function Home() {    
     const [iterations, setIterations] = useState(255);
 
-
     // useEffect is to make sure it is only run client-side
     useEffect(() => {
         import("./mandelbrot/wasm_exec").then(() => {
