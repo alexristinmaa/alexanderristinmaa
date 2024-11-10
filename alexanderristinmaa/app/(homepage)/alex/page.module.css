@@ -1,0 +1,45 @@
+#imgDiv {
+    width: 500px;
+}
+
+#imgDiv > p {
+    margin-top: 8px;
+    float: right;
+}
+
+#img {
+    width: 100%;
+    border: 2px solid var(--black);
+}
+
+#imgText {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+#textDiv {
+    flex: 1;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+}
+
+#textDiv a {
+    color: var(--highlight)
+}
+
+@media screen and (max-width: 900px) {
+    #imgDiv {
+        width: min(100%, 500px);
+    }
+    #img {
+        width: 100%;
+    }
+    
+    #imgText {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: column;
+    }
+}
