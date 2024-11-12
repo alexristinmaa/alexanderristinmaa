@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div id={styles.imgText}>
       <div id={styles.imgDiv}>
-        <img id={styles.img} src='/alex/me.jpg'></img>
+        <img id={styles.img} src='/alex/me.jpg' alt="vacker bild på alex med suddig bakgrund"></img>
         <p><i>Jag i Fontainebleau, Frankrike. 2024</i></p>
       </div>
       <div id={styles.textDiv}>

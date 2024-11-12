@@ -10,41 +10,58 @@ let mandelbrot: any, allocateBuffer: any;
 let bufferPointer: number;
 let WIDTH : number, HEIGHT : number;
 
-let xStart = -2;
-let xEnd = 0.47;
-let yStart = -1.12;
-let yEnd = 1.12;
+const initialBBox = [-2, -1.12, 0.47, 1.12];
+
+let [xStart, yStart, xEnd, yEnd] = initialBBox;
 
 const ZOOMFACTOR = 8;
+
+function scaleMandelbrot(canvasWidth: number, canvasHeight: number, initialBBox: number[]): number[] {
+    let ratio = canvasWidth / canvasHeight;
+
+    if(ratio > 1) {
+        let diff2 = (initialBBox[2] - initialBBox[0]) * (ratio - 1) / 2;
+        return [initialBBox[0] - diff2, initialBBox[1], initialBBox[2] + diff2, initialBBox[3]];
+    }
+    ratio = 1 / ratio;
+    let diff2 = (initialBBox[3] - initialBBox[1]) * (ratio - 1) / 2;
+
+    return [initialBBox[0], initialBBox[1] - diff2, initialBBox[2], initialBBox[3] + diff2];
+    
+}
 
 export default function Home() {    
     const [iterations, setIterations] = useState(255);
 
     // useEffect is to make sure it is only run client-side
     useEffect(() => {
-        import("./mandelbrot/wasm_exec").then(() => {
+        const ctx = (document.getElementById("mandelbrotCanvas") as HTMLCanvasElement).getContext("2d");
+
+        ctx!.canvas.width = Math.floor(ctx!.canvas.clientWidth);
+        ctx!.canvas.height = Math.floor(ctx!.canvas.clientHeight);
+
+        (async () => {
+            await import("./mandelbrot/wasm_exec")
+
             const go = new global.Go(); // Defined in wasm_exec.js
             const WASM_URL = '/mandelbrot/wasm.wasm';
     
-            WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject).then(function (obj) {
-                wasm = obj.instance;
-                go.run(wasm);
-    
-                ({allocateBuffer, mandelbrot} = wasm.exports);
-    
-                ({width: WIDTH, height: HEIGHT} = document.getElementById("mandelbrotCanvas")!.getBoundingClientRect());
-    
-                bufferPointer = allocateBuffer(WIDTH, HEIGHT);
+            wasm = (await WebAssembly.instantiateStreaming(fetch(WASM_URL), go.importObject)).instance;
+            go.run(wasm);
 
-                renderMandelbrot();
-            })
-        });
+            ({allocateBuffer, mandelbrot} = wasm.exports);
+
+            [WIDTH, HEIGHT] = [ctx!.canvas.width, ctx!.canvas.height];
+            [xStart, yStart, xEnd, yEnd] = scaleMandelbrot(WIDTH, HEIGHT, initialBBox);
+            
+            bufferPointer = allocateBuffer(WIDTH, HEIGHT);
+
+            renderMandelbrot();
+        })()
     }, [])
 
-    
-
     function renderMandelbrot() {
-        console.log(xStart, xEnd, yStart, yEnd)
+        console.log(xStart, yStart, xEnd, yEnd);
         mandelbrot(xStart,xEnd,yStart,yEnd, iterations);
 
         // Get the buffer as a Uint8Array
@@ -71,12 +88,22 @@ export default function Home() {
         renderMandelbrot();
     }
 
+    function resetMandelbrot() {
+        [xStart, yStart, xEnd, yEnd] = scaleMandelbrot(WIDTH, HEIGHT, initialBBox);
+
+        renderMandelbrot();
+    }
+
 
     return (
         <div>
-            <canvas id="mandelbrotCanvas" width="700px" height="700px" onClick={zoomMandelbrot}></canvas>
-            <button onClick={renderMandelbrot}>DISPLAY</button>
+            <canvas id="mandelbrotCanvas" style={{width: "100vw", height: "90vh"}} onClick={zoomMandelbrot}></canvas>
+            <p>Click to zoom</p>
+            <span>Amount of iterations (better resolution, less performant): </span>
             <input type="number" value={iterations} onChange={(e) => setIterations(parseInt(e.target.value) || 0)} />
+            <br />
+            <button onClick={renderMandelbrot}>DISPLAY</button>
+            <button onClick={resetMandelbrot}>RESET</button>
         </div>
     )
 }

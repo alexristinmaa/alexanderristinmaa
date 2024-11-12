@@ -39,8 +39,6 @@ func mandelbrot(xStart, xEnd, yStart, yEnd float64, iterations int) {
 
 	scaleIterations := 255.0 / float64(iterations)
 
-	fmt.Println(HEIGHT, WIDTH)
-
 	for y := 0; y < HEIGHT; y++ {
 		coord = complex(xStart, imag(coord))
 
