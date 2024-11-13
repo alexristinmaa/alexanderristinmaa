@@ -1,8 +1,9 @@
 #nav {
   background-color: var(--header-rgb);
   color: var(--header-foreground);
-  padding: 20px;
+  padding: var(--navPadding);
   flex-shrink: 0;
+  font-size: 1rem;
 }
 
 #navLine {
@@ -12,9 +13,13 @@
 }
 
 .navLink {
-  padding: 8px;
+  padding: var(--navTextPadding);
   display: inline-block;
   margin: auto 0 auto 0;
+}
+
+.active {
+  font-weight: bold;
 }
 
 .navLeft {
@@ -29,9 +34,9 @@
 }
 
 #navTitle {
-  font-size: 20px;
+  font-size: var(--navTitleSize);
   font-weight: bold;
-  padding: 8px;
+  padding: var(--navTextPadding);
   display: inline-block;
   color: var(--highlight);
 }
@@ -43,13 +48,13 @@
 }
 
 #main {
-  padding: 20px 100px;
+  padding: var(--mainTopBottomPadding) var(--mainPadding);
   flex: 1 0 auto;
 }
 
 #footer {
   flex-shrink: 0;
-  height: 100px;
+  height: var(--footerHeight);
   background-color: var(--highlight-weak);
   padding: 20px;
   display: flex;
@@ -57,10 +62,4 @@
   justify-content: center;
   text-align: center;
   white-space: pre-line;
-}
-
-@media screen and (max-width: 900px) {
-  #main {
-    padding: 20px 40px;
-  }
 }

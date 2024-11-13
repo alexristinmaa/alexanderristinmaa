@@ -1,6 +1,5 @@
 // nextjs
 import Link from 'next/link'
-import { metadata } from './layout';
 
 // style
 import styles from './page.module.css';
@@ -21,18 +20,21 @@ export default function Home() {
   return (
     <div id={styles.contentDiv}>
       <div>
-        <p>Om du vågar kolla runt kan du säkert hitta v<Link href='/hemligt'>a</Link>d du letar efter.</p><br />
+        <p>Om du vågar kolla runt kan du säkert hitta vad du letar efter.</p><br />
         <p id={styles.experimentsTitle}><b>Mina senaste experiment:</b></p>
         <ul id={styles.experimentsList}>
           {
             getExperiments().map((v) => {
               return (
-                <Link href={`/${v.experiment}`}>
-                  <li key={v.metadata.name}>
-                    <p className={styles.experimentTitle}><u>{v.metadata.name}</u></p>
-                    <p>{v.metadata.description}</p>
-                  </li>
-                </Link>
+                <li key={v.metadata.name}>
+                  <div className={styles.experimentTitle}>
+                    <Link href={`/${v.experiment}`}><u>{v.metadata.name}</u></Link>
+                    <Link href={`/${v.experiment}/info`}> (<u>info</u>)</Link>
+                  </div>
+                  
+                  <Link href={`/${v.experiment}`}><p>{v.metadata.description}</p></Link>
+                  
+                </li>
               )
             })
           }

@@ -3,7 +3,7 @@ name: Mandelbrot in WASM!
 description: The beautiful mandelbrot fractal computed and rendered with compiled WebAssembly!
 tags: 
     - WebAssembly
-    - Fractals
+    - Go
 ---
 # Mandelbrot with Webassembly
 
@@ -12,8 +12,8 @@ This is my first experience using webassembly! It turned out to be very interest
 ![mandelbrot](/mandelbrot/mandelbrot.png "Mandelbrot")
 
 ## Go "backend"
-The idea was to create a go-mandelbrot kind of
-backend. It looks something like this:
+The idea was to create a go-mandelbrot kind of backend. This function is a standard mandelbrot
+computation function ([wikipedia: mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set#Computer_drawings)). It looks something like this:
 
 ```go
 func mandelbrot(xStart, xEnd, yStart, yEnd float64, iterations int) {

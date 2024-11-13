@@ -7,6 +7,20 @@
   --highlight-weak: #e5b065;
   --beaver: #a9927dff;
   --walnut-brown: #5e503fff;
+
+  --mainPadding: 100px;
+  --mainTopBottomPadding: 20px;
+  --footerHeight: 100px;
+
+  --navTitleSize: 1.3rem;
+  --navPadding: 20px;
+  --navTextPadding: 8px;
+}
+
+@media screen and (max-width: 900px) {
+  :root {
+    --mainPadding: 40px;
+  }
 }
 
 * {

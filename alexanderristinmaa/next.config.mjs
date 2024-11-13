@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  trailingSlash: true,
+  trailingSlash: false,
   webpack(config, { isServer, dev }) {
     // Since Webpack 5 doesn't enable WebAssembly by default, we should do it manually
     config.experiments = {
@@ -10,7 +10,7 @@ const nextConfig = {
     };
 
     config.resolve = {
-      extensions: ['.ts', '.wasm', '...'],
+      extensions: ['.ts', '.tsx', '.wasm', '...'],
     }
 
     config.resolve.alias = {

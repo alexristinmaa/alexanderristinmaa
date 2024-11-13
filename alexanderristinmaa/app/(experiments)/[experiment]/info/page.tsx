@@ -23,10 +23,9 @@ export function generateStaticParams() {
 export default async function Page({ params } : { params: { experiment: string } }) {
     const { experiment } = params;
     const markdownString = fs.readFileSync(`./app/(experiments)/${experiment}/page.md`, 'utf8');
-    const htmlFromMarkdown = await marked.parse(parseMD(markdownString).content);
 
-    return (
-      <div style={{minHeight: '100vh'}} dangerouslySetInnerHTML={{__html: htmlFromMarkdown}}>
-      </div>
-    )
+    // Funny way to add home button but it works :)
+    const htmlFromMarkdown = "<a href='/'>Homepage</a>" + await marked.parse(parseMD(markdownString).content);
+
+    return <div style={{minHeight: '100vh'}} dangerouslySetInnerHTML={{__html: htmlFromMarkdown}}></div>
   }
