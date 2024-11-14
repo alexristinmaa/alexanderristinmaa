@@ -33,8 +33,8 @@ export default function RootLayout({
             </div>
             <div className={styles.navRight}>
               {/*<Link className={styles.navLink} href='/blog'><b>Bloggen</b></Link>*/}
-              <Link className={`${styles.navLink} ${pathname == '/alex'    ? styles.active : ''}`} href='/alex'>Vem är jag</Link>
-              <Link className={`${styles.navLink} ${pathname == '/gallery' ? styles.active : ''}`} href='/gallery'>Konsthall</Link>
+              <Link className={`${styles.navLink} ${pathname == '/alex/'    ? styles.active : ''}`} href='/alex'>Vem är jag</Link>
+              <Link className={`${styles.navLink} ${pathname == '/gallery/' ? styles.active : ''}`} href='/gallery'>Konsthall</Link>
             </div>
           </div>
         </nav>

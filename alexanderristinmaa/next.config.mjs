@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  trailingSlash: false,
+  trailingSlash: true,
   webpack(config, { isServer, dev }) {
     // Since Webpack 5 doesn't enable WebAssembly by default, we should do it manually
     config.experiments = {
