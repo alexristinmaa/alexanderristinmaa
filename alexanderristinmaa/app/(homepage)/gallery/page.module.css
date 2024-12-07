@@ -5,10 +5,11 @@
     width: 100vw;
     margin-bottom: calc(var(--mainTopBottomPadding) * -2 - var(--footerHeight));
     perspective: 10px;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     background-color: var(--white);
     scroll-behavior: smooth;
+    z-index: 2;
 }
 
 #mainImage {
@@ -16,7 +17,7 @@
     background-size: cover;
     background-position: bottom;
     width: 100%;
-    height: calc(100vh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px);
+    height: calc(100dvh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px);
     transform: translateZ(-5px) scale(1.5);
 }
 
@@ -33,7 +34,7 @@
     width: 100%;
     position: absolute;
     color: white;
-    top: calc(100vh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px - 0.95em);
+    top: calc(100dvh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px - 0.95em);
 }
 
 #rest {

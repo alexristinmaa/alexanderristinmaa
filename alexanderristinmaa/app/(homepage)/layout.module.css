@@ -44,7 +44,7 @@
 #body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 }
 
 #main {
@@ -62,4 +62,5 @@
   justify-content: center;
   text-align: center;
   white-space: pre-line;
+  overflow-y: hidden;
 }

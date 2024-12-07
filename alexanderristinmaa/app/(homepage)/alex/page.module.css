@@ -1,5 +1,6 @@
 #imgDiv {
     width: 500px;
+    overflow-y: hidden;
 }
 
 #imgDiv > p {
@@ -10,12 +11,14 @@
 #img {
     width: 100%;
     border: 2px solid var(--black);
+    overflow-y: hidden;
 }
 
 #imgText {
     display: flex;
     flex-direction: row;
     gap: 30px;
+    overflow-y: hidden;
 }
 
 #textDiv {
@@ -23,6 +26,7 @@
     display: flex;
     gap: 1em;
     flex-direction: column;
+    overflow-y: hidden;
 }
 
 #textDiv a {
