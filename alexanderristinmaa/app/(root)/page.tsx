@@ -1,3 +1,5 @@
+"use client";
+
 import { isDictKey } from '../[lang]/dictionaries'
 
 import { redirect } from 'next/navigation';
