@@ -5,7 +5,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Root({ children, params } : { children: React.ReactNode, params: Promise<{lang: string}> }) {
-    const lang = (await params).lang;
+    const {lang} = await params;
     
     return (
       <html lang={lang}>

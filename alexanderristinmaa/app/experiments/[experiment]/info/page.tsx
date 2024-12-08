@@ -23,7 +23,7 @@ export function generateStaticParams() {
 
 // Multiple versions of this page will be statically generated
 // using the `params` returned by `generateStaticParams`
-export default async function Page({ params } : { params: { experiment: string } }) {
+export default async function Page({ params } : { params: Promise<{experiment: string}> }) {
     const { experiment } = await params;
     const markdownString = fs.readFileSync(`./app/experiments/${experiment}/page.md`, 'utf8');
 

@@ -19,7 +19,7 @@ export default async function Home({params} : {params: Promise<{lang: string}> }
             .map(v => ({metadata: parseMD(v.data).metadata as any, experiment: v.experiment}));
   }
 
-  const lang = (await params).lang;
+  const {lang} = await params;
   const dict = await getDictionary(lang);
 
   return (

@@ -3,7 +3,7 @@ import Catimation from './catimation';
 import { getDictionary } from '../dictionaries';
 
 export default async function Home({params} : {params: Promise<{lang: string}> }) {
-  const lang = (await params).lang;
+  const {lang} = await params;
   const dict = await getDictionary(lang);
 
   return (
