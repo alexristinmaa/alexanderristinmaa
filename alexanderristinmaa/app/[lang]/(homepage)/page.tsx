@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import parseMD from 'parse-md';
 import { getDictionary } from '../dictionaries';
 
-export default async function Home({params} : {params: { lang: string } }) {
+export default async function Home({params} : {params: Promise<{lang: string}> }) {
   const experimentsPath = './app/experiments';
 
   const getExperiments = () => {

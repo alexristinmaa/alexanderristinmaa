@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Catimation from './catimation';
 import { getDictionary } from '../dictionaries';
 
-export default async function Home({params} : {params: { lang: string } }) {
+export default async function Home({params} : {params: Promise<{lang: string}> }) {
   const lang = (await params).lang;
   const dict = await getDictionary(lang);
 
