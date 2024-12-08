@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/hemligt/catimation.ts"
+    "app/[lang]/hemligt/animationData.ts"
   ],
   "exclude": [
     "node_modules"
