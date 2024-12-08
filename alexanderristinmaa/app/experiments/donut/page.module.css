@@ -1,0 +1,21 @@
+.text {
+    position: absolute;
+	z-index: 100;
+	display:inline;
+    width: auto;
+    height: auto;
+}
+
+#thebox {
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 30px;
+}
+
+#enableAudio {
+    top: 10px;
+    left: 10px;
+    color: white;
+}

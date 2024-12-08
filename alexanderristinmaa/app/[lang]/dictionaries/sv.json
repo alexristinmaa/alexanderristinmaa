@@ -1,0 +1,20 @@
+{
+    "title": "Alex Ställe",
+    "about": "Vem är jag",
+    "gallery": "Konsthall",
+    "footer": {
+        "made": "Gjord med",
+        "by": "av Alexander Ristinmaa 2024"
+    },
+    "home": {
+        "welcome": "Om du vågar kolla runt kan du säkert hitta vad du letar efter.",
+        "experiments": "Mina senaste experiment"
+    },
+    "hemligt": {
+        "supposed": "Detta skulle ju vara hemligt vad fan?",
+        "thatsall": "Okej, det var allt",
+        "goback": "gå tillbaka nu",
+        "creep": "Varför snokar du?",
+        "cats": "Fuck it, katter"
+    }
+}

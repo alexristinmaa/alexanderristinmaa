@@ -1,0 +1,20 @@
+{
+    "title": "Alex Abode",
+    "about": "Who am I",
+    "gallery": "Gallery",
+    "footer": {
+        "made": "Made with",
+        "by": "by Alexander Ristinmaa 2024"
+    },
+    "home": {
+        "welcome": "Feel free to have a look around. Maybe you'll find what you were looking for.",
+        "experiments": "My latest experiments"
+    },
+    "hemligt": {
+        "supposed": "What?! This was supposed to be a secret...",
+        "thatsall": "Ok, that's all",
+        "goback": "go back home now",
+        "creep": "Why are you creeping?",
+        "cats": "Fuck it, cats"
+    }
+}

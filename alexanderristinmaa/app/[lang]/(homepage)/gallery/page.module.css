@@ -1,0 +1,43 @@
+#main {
+    position: relative;
+    left: calc(var(--mainPadding) * -1);
+    top: calc(var(--mainTopBottomPadding) * -1);
+    width: 100vw;
+    margin-bottom: calc(var(--mainTopBottomPadding) * -2 - var(--footerHeight));
+    perspective: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: var(--white);
+    scroll-behavior: smooth;
+    z-index: 2;
+}
+
+#mainImage {
+    background-image: url('main.jpg');
+    background-size: cover;
+    background-position: bottom;
+    width: 100%;
+    height: calc(100dvh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px);
+    transform: translateZ(-5px) scale(1.5);
+}
+
+#mainImage > div {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(from var(--black) r g b / 50%);
+}
+
+#mainTitle {
+    font-size: 17vw;
+    font-weight: 500;
+    text-align: right;
+    width: 100%;
+    position: absolute;
+    color: white;
+    top: calc(100dvh - var(--navTitleSize) - var(--navPadding) * 2 - var(--navTextPadding) * 2 - 5px - 0.95em);
+}
+
+#rest {
+    position: absolute;
+    width: 100%;
+}
