@@ -110,11 +110,21 @@ func main() {
 		return cmp.Compare(b.Score, a.Score)
 	})
 
-	fmt.Println(userList)
+	f, err := os.Create("./ranking.json")
 
-	for i := 0; i < 10; i++ {
-		fmt.Println(userList[i].Name, ":", userList[i].Score)
+	if err != nil {
+		panic(err)
 	}
+
+	defer f.Close()
+
+	jsonStr, err := json.Marshal(userList)
+
+	if err != nil {
+		panic(err)
+	}
+
+	f.WriteString(string(jsonStr))
 }
 
 func GetAllProblemsFromWall(gymId, wallId string) []ProblemDocument {
