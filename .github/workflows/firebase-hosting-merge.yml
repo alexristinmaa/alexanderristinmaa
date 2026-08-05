@@ -3,6 +3,8 @@
 
 name: Deploy to Firebase Hosting on merge
 'on':
+  schedule:
+     - cron: "30 21 * * *"
   push:
     branches:
       - main
