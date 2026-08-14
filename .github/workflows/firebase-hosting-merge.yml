@@ -16,6 +16,11 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version: '1.26.5'
+      - run:
+          touch .env
+          echo LEKAOS_EMAIL=${{ secrets.LEKAOS_EMAIL }} >> .env
+          echo LEKAOS_PASSWORD=${{ secrets.LEKAOS_PASSWORD }} >> .env
+          echo LEKAOS_APITOKEN=${{ secrets.LEKAOS_APITOKEN }} >> .env
       - run: go run main.go && mv ranking.json alexanderristinmaa/public/ranking/ranking.json
       - run: npm ci --prefix alexanderristinmaa/ && npm run build --prefix alexanderristinmaa/
       - uses: FirebaseExtended/action-hosting-deploy@v0
