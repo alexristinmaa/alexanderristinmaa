@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"cmp"
 	"encoding/json"
 	"fmt"
@@ -9,6 +10,8 @@ import (
 	"net/url"
 	"os"
 	"slices"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 // FIREBASE NATIVES
@@ -71,6 +74,12 @@ type Problem struct {
 	SetterName StringValue  `json:"setterName"`
 }
 
+// AUTHORIZATION
+
+type AuthorizedUser struct {
+	IdToken string `json:"idToken"`
+}
+
 // EXTRA
 
 type StatUser struct {
@@ -79,11 +88,11 @@ type StatUser struct {
 }
 
 // https://firestore.googleapis.com/v1/projects/kaus-wall/databases/(default)/documents/gyms/JPXJQA5vb2WUQVt94MbD/walls/jK6Z5u60pFoXeVSZ9m15/problems
-const authToken string = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwY2FkODZkNzY5ZmFkZTViODkxNmQ5Y2U1MDc0YzgyMGYwNjdkNTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20va2F1cy13YWxsIiwiYXVkIjoia2F1cy13YWxsIiwiYXV0aF90aW1lIjoxNzg1ODU2Nzg1LCJ1c2VyX2lkIjoiM3pOYk5qcEtmbVZyY2lhcFAwMUZWTzFoQUQzMiIsInN1YiI6IjN6TmJOanBLZm1WcmNpYXBQMDFGVk8xaEFEMzIiLCJpYXQiOjE3ODU5NTk4MDYsImV4cCI6MTc4NTk2MzQwNiwiZW1haWwiOiJhbGV4LnJpc3Rpbm1hYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYWxleC5yaXN0aW5tYWFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.hJ03sKYIq1MXEaWNENwh8DdjCEtV2ZduSY_Ho2yd4DXIGwGzzMM7aFgG_O7oIUnvwAaYEMVEHroMO69EBfGWBeGcJJ0F7s1wM1KfjlYLYa-u4vsdVHTP-xYLmJCZLW7-RCdJdyuHPm8ctzTIgu1cyWVMnk0qjYGT6ACoO-yMpvEWB8jHPNNk84VjBVHKLBbFo4e7JayTlsjoAJ5ffrVkOdqSV9HNynrEpM9vtM8zKLaqrh6EUbnRlJXvoaUEI7xC8OJ95sy-b3CBwRBI5cXNYLrEQh2LYQxZaWJutPd29hrGV7cNX6cWgoSo8LfKC2eQxyIHl5-j52IVqJh7GGAdrQ"
 
 func main() {
-	users := GetAllUsers()
-	problems := GetAllProblemsFromWall("JPXJQA5vb2WUQVt94MbD", "jK6Z5u60pFoXeVSZ9m15")
+	authToken := "Bearer " + GetAuthToken(os.Getenv("KAOSAPP_EMAIL"), os.Getenv("KAOSAPP_PASSWORD"), os.Getenv("KAOSAPP_APITOKEN"))
+	users := GetAllUsers(authToken)
+	problems := GetAllProblemsFromWall(authToken, "JPXJQA5vb2WUQVt94MbD", "jK6Z5u60pFoXeVSZ9m15")
 
 	problemMap := make(map[string]string)
 	userList := make([]StatUser, len(users))
@@ -127,14 +136,49 @@ func main() {
 	f.WriteString(string(jsonStr))
 }
 
-func GetAllProblemsFromWall(gymId, wallId string) []ProblemDocument {
-	body, err := os.ReadFile("./problems.json")
+func GetAuthToken(email, password, apiToken string) string {
+	// https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=APITOKEN
+	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s", apiToken)
+	reqBody := fmt.Sprintf(`
+		{
+			"email": "%s",
+			"password": "%s",
+			"returnSecureToken": true
+		}
+	`, email, password)
 
-	var problems []ProblemDocument
-	err = json.Unmarshal(body, &problems)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(reqBody)))
 
-	return problems
+	if err != nil {
+		panic(err)
+	}
 
+	req.Header.Add("Content-Type", "Application/json")
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var res AuthorizedUser
+	err = json.Unmarshal([]byte(body), &res)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return res.IdToken
+}
+
+func GetAllProblemsFromWall(authToken, gymId, wallId string) []ProblemDocument {
 	url := fmt.Sprintf("https://firestore.googleapis.com/v1/projects/kaus-wall/databases/(default)/documents/gyms/%s/walls/%s/problems?pageSize=5000", gymId, wallId)
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -144,17 +188,10 @@ func GetAllProblemsFromWall(gymId, wallId string) []ProblemDocument {
 
 	req.Header.Add("Authorization", authToken)
 
-	return getAllPages[ProblemDocument](req, "firstProblems")
+	return getAllPages[ProblemDocument](req, "first")
 }
 
-func GetAllUsers() []UserDocument {
-	body, err := os.ReadFile("./users.json")
-
-	var users []UserDocument
-	err = json.Unmarshal(body, &users)
-
-	return users
-
+func GetAllUsers(authToken string) []UserDocument {
 	req, err := http.NewRequest("GET", "https://firestore.googleapis.com/v1/projects/kaus-wall/databases/(default)/documents/users?pageSize=5000", nil)
 
 	if err != nil {
@@ -171,14 +208,12 @@ func getAllPages[T any](req *http.Request, pageToken string) []T {
 		return []T{}
 	}
 
-	fmt.Println("Getting users, pageToken:", pageToken)
+	fmt.Println("Getting pageToken:", pageToken)
 
 	if pageToken != "first" {
 		req.URL.RawQuery = url.Values{
 			"pageToken": {pageToken},
 		}.Encode()
-	} else if pageToken == "" {
-
 	}
 
 	client := &http.Client{}
