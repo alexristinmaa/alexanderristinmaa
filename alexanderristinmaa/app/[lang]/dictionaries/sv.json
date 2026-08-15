@@ -16,5 +16,12 @@
         "goback": "gå tillbaka nu",
         "creep": "Varför snokar du?",
         "cats": "Fuck it, katter"
+    },
+    "ranking": {
+        "title": "Kaosväggsranking",
+        "club": "Skånes Klätterklubb",
+        "climber": "Klättrare",
+        "sends": "Toppar",
+        "info": "Rankingen uppdateras en gång om dygnet, runt midnatt"
     }
 }

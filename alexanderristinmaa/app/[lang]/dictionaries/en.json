@@ -16,5 +16,12 @@
         "goback": "go back home now",
         "creep": "Why are you creeping?",
         "cats": "Fuck it, cats"
+    },
+    "ranking": {
+        "title": "Chaos Wall Ranking",
+        "club": "Skånes Klätterklubb",
+        "climber": "Climber",
+        "sends": "Sends",
+        "info": "The ranking updates once per day, around midnight"
     }
 }

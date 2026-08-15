@@ -4,7 +4,12 @@ import styles from './page.module.css';
 import rankingData from '../../../public/ranking/ranking.json'
 import '/app/icons.css'
 
-export default async function Home() {
+import { getDictionary } from '../dictionaries';
+
+export default async function Home({params} : {params: Promise<{lang: string}> }) {
+  const {lang} = await params;
+  const dict = (await getDictionary(lang)).ranking;
+
   let crownPicker = (i: number) => {
     let crowns = ['Gold', 'Silver', 'Bronze'];
 
@@ -16,15 +21,15 @@ export default async function Home() {
 
   return <div className={styles.centerer}>
     <header>
-      <h2>Kaosvägg Ranking</h2>
-      <h3>Skånes Klätterklubb</h3>
+      <h2>{dict.title}</h2>
+      <h3>{dict.club}</h3>
     </header>
     <main>
       <table className={styles.rankingTable}>
         <thead>
           <tr className={styles.tableRow}>
-            <th scope="col">Climber</th>
-            <th scope="col" className={styles.score}>Sends</th>
+            <th scope="col">{dict.climber}</th>
+            <th scope="col" className={styles.score}>{dict.sends}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,7 +40,7 @@ export default async function Home() {
         </tbody>
       </table>
       <br />
-      <p className={styles.info}>The ranking updates once per day, around midnight</p>
+      <p className={styles.info}>{dict.info}</p>
     </main>
   </div>
 }
