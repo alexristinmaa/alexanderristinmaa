@@ -8,3 +8,26 @@
     width: 1em;
     height: 0.9em;
 }
+
+.crownGold {
+    background-image: url('../images/goldCrown.svg');
+    width: 1em;
+    height: 1em;
+}
+
+.crownSilver {
+    background-image: url('../images/silverCrown.svg');
+    width: 1em;
+    height: 1em;
+}
+
+.crownBronze {
+    background-image: url('../images/bronzeCrown.svg');
+    width: 1em;
+    height: 0.9em;
+}
+
+.empty {
+    width: 1em;
+    height: 0.9em;
+}

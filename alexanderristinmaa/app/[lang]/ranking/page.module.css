@@ -1,0 +1,62 @@
+.centerer {
+    width: min(500px, 80%);
+    margin: 0 auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+    gap: 1em;
+}
+
+.centerer > header > h2 {
+    margin-bottom: 0em;
+}
+
+.centerer > header > h3 {
+    margin-top: 0em;
+    font-weight: normal;
+}
+
+.centerer > main {
+    width: 100%;
+}
+
+.rankingTable {
+    width: 100%;
+    text-align: left;
+    border-spacing: 0;
+}
+
+
+.tableRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.tableRow:nth-child(even) {
+    background-color: #ebebeb !important;
+}
+
+.tableRow > * {
+    padding: 0.5em;
+}
+
+.tableRow > td {
+    flex: 2;
+    display: flex;
+    align-items: center;
+}
+
+.tableRow > th {
+    flex: 2;
+    display: flex;
+}
+
+.score {
+    flex: 1 !important;
+}
+
+.info {
+    color: var(--walnut-brown);
+    font-size: 0.9em;
+    text-align: end;
+}
