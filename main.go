@@ -90,7 +90,7 @@ type StatUser struct {
 // https://firestore.googleapis.com/v1/projects/kaus-wall/databases/(default)/documents/gyms/JPXJQA5vb2WUQVt94MbD/walls/jK6Z5u60pFoXeVSZ9m15/problems
 
 func main() {
-	authToken := "Bearer " + GetAuthToken(os.Getenv("KAOSAPP_EMAIL"), os.Getenv("KAOSAPP_PASSWORD"), os.Getenv("KAOSAPP_APITOKEN"))
+	authToken := "Bearer " + GetAuthToken(os.Getenv("LEKAOS_EMAIL"), os.Getenv("LEKAOS_PASSWORD"), os.Getenv("LEKAOS_APITOKEN"))
 	users := GetAllUsers(authToken)
 	problems := GetAllProblemsFromWall(authToken, "JPXJQA5vb2WUQVt94MbD", "jK6Z5u60pFoXeVSZ9m15")
 
