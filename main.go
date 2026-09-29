@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"slices"
+	"time"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -26,6 +27,10 @@ type StringValue struct {
 
 type MapValue[E any] struct {
 	Fields map[string]E `json:"fields"`
+}
+
+type TimestampValue struct {
+	Value string `json:"timestampValue"`
 }
 
 type Collection[T any] struct {
@@ -68,10 +73,11 @@ type ProblemDocument struct {
 }
 
 type Problem struct {
-	Name       StringValue  `json:"name"`
-	Grade      IntegerValue `json:"grade"`
-	Id         StringValue  `json:"id"`
-	SetterName StringValue  `json:"setterName"`
+	Name         StringValue    `json:"name"`
+	Grade        IntegerValue   `json:"grade"`
+	Id           StringValue    `json:"id"`
+	SetterName   StringValue    `json:"setterName"`
+	CreationDate TimestampValue `json:"creationDate"`
 }
 
 // AUTHORIZATION
@@ -83,8 +89,19 @@ type AuthorizedUser struct {
 // EXTRA
 
 type StatUser struct {
-	Name  string
-	Score int
+	Name      string
+	Weeks     map[string]StatWeek
+	SendCount int
+}
+
+type StatSend struct {
+	Date  string
+	Grade string
+}
+
+type StatWeek struct {
+	Count  int
+	Grades []string
 }
 
 // https://firestore.googleapis.com/v1/projects/kaus-wall/databases/(default)/documents/gyms/JPXJQA5vb2WUQVt94MbD/walls/jK6Z5u60pFoXeVSZ9m15/problems
@@ -94,30 +111,75 @@ func main() {
 	users := GetAllUsers(authToken)
 	problems := GetAllProblemsFromWall(authToken, "JPXJQA5vb2WUQVt94MbD", "jK6Z5u60pFoXeVSZ9m15")
 
-	problemMap := make(map[string]string)
+	problemMap := make(map[string]StatSend)
 	userList := make([]StatUser, len(users))
 
 	for _, problemDoc := range problems {
-		problemMap[problemDoc.Fields.Id.Value] = problemDoc.Fields.Grade.Value
+		problemMap[problemDoc.Fields.Id.Value] = StatSend{
+			Date:  problemDoc.Fields.CreationDate.Value,
+			Grade: problemDoc.Fields.Grade.Value,
+		}
 	}
 
 	for i, userDoc := range users {
-		score := 0
+		sends := make(map[string]StatWeek)
+		sendCount := 0
 
 		for problemId := range userDoc.Fields.Problems.Problems.Fields {
-			if _, ok := problemMap[problemId]; ok {
-				score += 1
+			if problem, ok := problemMap[problemId]; ok {
+				// Get the first day of this week, and if the sends map has the date,
+				// add it to the date
+				sendCount += 1
+
+				date, err := time.Parse(time.RFC3339, problem.Date)
+
+				if err != nil {
+					panic(err)
+				}
+
+				normalizedDate := date.AddDate(0, 0, -int(date.Weekday())).Truncate(time.Hour * 24).Format("2006-01-02")
+
+				if err != nil {
+					panic(err)
+				}
+
+				if _, ok := sends[normalizedDate]; !ok {
+					sends[normalizedDate] = StatWeek{
+						Count:  0,
+						Grades: []string{},
+					}
+				}
+
+				previousStat := sends[normalizedDate]
+
+				sends[normalizedDate] = StatWeek{
+					Count:  previousStat.Count + 1,
+					Grades: append(previousStat.Grades, problem.Grade),
+				}
 			}
 		}
+
 		userList[i] = StatUser{
-			Name:  userDoc.Fields.Name.Value,
-			Score: score,
+			Name:      userDoc.Fields.Name.Value,
+			Weeks:     sends,
+			SendCount: sendCount,
 		}
 	}
 
 	slices.SortFunc(userList, func(a, b StatUser) int {
-		return cmp.Compare(b.Score, a.Score)
+		return cmp.Compare(b.SendCount, a.SendCount)
 	})
+
+	// Filter userList
+	filteredStats := []StatUser{}
+
+	for _, u := range userList {
+		if u.SendCount == 0 {
+			continue
+		}
+
+		filteredStats = append(filteredStats, u)
+	}
 
 	f, err := os.Create("./ranking.json")
 
@@ -127,7 +189,7 @@ func main() {
 
 	defer f.Close()
 
-	jsonStr, err := json.Marshal(userList)
+	jsonStr, err := json.Marshal(filteredStats)
 
 	if err != nil {
 		panic(err)

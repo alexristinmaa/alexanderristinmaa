@@ -29,26 +29,30 @@
 
 .tableRow {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .tableRow:nth-child(even) {
     background-color: #ebebeb !important;
 }
 
-.tableRow > * {
-    padding: 0.5em;
+.tableValues {
+    display: flex;
+    flex-direction: row;
 }
 
-.tableRow > td {
-    flex: 2;
+.tableValues > div {
     display: flex;
+    flex: 2;
     align-items: center;
 }
 
-.tableRow > th {
-    flex: 2;
-    display: flex;
+.tableValues > * {
+    padding: 0.5em;
+}
+
+.tableHeaders {
+    font-weight: bold;
 }
 
 .score {
@@ -59,4 +63,21 @@
     color: var(--walnut-brown);
     font-size: 0.9em;
     text-align: end;
+}
+
+.collapsible {
+    display: block;
+    padding: 0.5em;
+    margin: 0.5em;
+    border-top: 1px solid #64564e4b;
+    height: 100%;
+}
+
+.collapsed {
+    display: none !important;
+}
+
+.collapseRow:hover {
+    background-color: #e5e1e1 !important;
+    cursor: pointer;
 }
